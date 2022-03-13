@@ -30,10 +30,15 @@ string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 # commented out to increase the build speed.
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
+hunter_add_package(Boost COMPONENTS thread regex chrono log filesystem)
+find_package(Boost REQUIRED COMPONENTS thread regex chrono log filesystem)
+hunter_add_package(nlohmann_json)
+find_package(nlohmann_json CONFIG REQUIRED)
+
 
 add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/example.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/talk_to_client.cpp
 )
 
 add_executable(demo
@@ -46,11 +51,14 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 target_link_libraries(demo ${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} Boost::log Boost::thread Boost::filesystem Boost::chrono Boost::regex)
+target_link_libraries(${PROJECT_NAME} nlohmann_json)
+#Boost::log_setup system
 
 if(BUILD_TESTS)
   add_executable(tests
     # TODO: enum your files and delete this comment
-    ${CMAKE_CURRENT_SOURCE_DIR}/tests/example.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
   )
   target_link_libraries(tests ${PROJECT_NAME} GTest::gtest_main)
   enable_testing()
