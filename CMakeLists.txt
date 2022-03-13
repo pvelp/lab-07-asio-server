@@ -39,7 +39,7 @@ find_package(nlohmann_json CONFIG REQUIRED)
 add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment
         ${CMAKE_CURRENT_SOURCE_DIR}/sources/talk_to_client.cpp
-)
+        sources/logging.cpp include/logging.hpp)
 
 add_executable(demo
   ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp
